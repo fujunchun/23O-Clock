@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>哈哈哈哈哈</title>
+</head>
+<body>
+<p>当前在线人数：<span id="num"></span></p>
+<script src="js/socket.io.js"></script>
+<script>
+
+    window.onload = function () {
+      const oSpan = document.querySelector('#num')
+      const socket = io('http://localhost:9000');
+
+      socket.on('number', (data) => {
+        oSpan.textContent = data
+      })
+    }
+</script>
+</body>
+</html>
