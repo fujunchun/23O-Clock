@@ -5,17 +5,38 @@
     <title>哈哈哈哈哈</title>
 </head>
 <body>
-<p>当前在线人数：<span id="num"></span></p>
+<p>全国在线人数：<span id="num"></span></p>
+<p>当前城市在线人数：<span id="city-num"></span></p>
+
+<input id='input' type="text">
+<button id="join">加入房间</button>
 <script src="js/socket.io.js"></script>
 <script>
 
     window.onload = function () {
       const oSpan = document.querySelector('#num')
+      const oSpanCity = document.querySelector('#city-num')
+      const oBtn = document.querySelector('#join')
+      const oInput = document.querySelector('#input')
+
+
       const socket = io('http://localhost:9000');
 
-      socket.on('number', (data) => {
+      socket.on('total number', (data) => {
         oSpan.textContent = data
       })
+
+      socket.on('city number', (data) => {
+        oSpanCity.textContent = data
+      })
+
+      oBtn.addEventListener('click', () => {
+        console.log(oInput.value)
+
+        socket.emit('join room', {
+          cityCode: oInput.value
+        })
+      }, false)
     }
 </script>
 </body>

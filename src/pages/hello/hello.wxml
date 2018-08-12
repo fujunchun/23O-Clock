@@ -1,0 +1,4 @@
+<!--pages/hello/hello.wxml-->
+<view class="container hello">
+  <text class="text">{{ msg }}</text>
+</view>

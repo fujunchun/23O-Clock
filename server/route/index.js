@@ -15,9 +15,9 @@ router.get('/api/time', (ctx) => {
 // 获取最新歌曲信息
 router.get('/api/music', (ctx) => {
   ctx.response.body = {
-    singer: '周传雄',
-    name: '黄昏',
-    url: 'http://m10.music.126.net/20180810172858/7a1f2f4246e37441f673a9591df994c6/ymusic/47fc/ad40/6374/9c98f806e6611788937ef417b8e92489.mp3',
+    singer: 'Future of Forestry',
+    name: 'You',
+    url: 'http://m10.music.126.net/20180812165919/01eb33ae812c08f38b311dda816fc433/ymusic/aa68/0649/1ff8/ab32b978c8d3babe8044bc605899b5eb.mp3',
   }
 })
 

@@ -9,6 +9,9 @@
     </view>
   </view>
   <view class="usermotto">
-    <text class="user-motto">aaaa</text>
+    <text>{{ song.name }}</text>
+    <text>{{ song.singer }}</text>
+    <button bindtap='play'>播放</button>
+    <button bindtap='pause'>暂停</button>
   </view>
 </view>

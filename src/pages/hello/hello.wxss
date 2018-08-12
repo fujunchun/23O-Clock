@@ -1,0 +1,11 @@
+/* pages/hello/hello.wxss */
+.hello {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hello .text {
+  font-size: 115rpx;
+  text-align: center;
+}

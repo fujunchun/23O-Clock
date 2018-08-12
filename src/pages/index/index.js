@@ -4,10 +4,9 @@ const app = getApp()
 
 Page({
   data: {
-    motto: 'Hello World',
-    userInfo: {},
-    hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    song: null,
+    player: null,
+    playing: false
   },
   //事件处理函数
   bindViewTap: function() {
@@ -16,39 +15,52 @@ Page({
     })
   },
   onLoad: function () {
-    if (app.globalData.userInfo) {
-      this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
-      })
-    } else if (this.data.canIUse){
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        })
+    this.getSong()
+  },
+
+  // 获取歌曲信息
+  getSong () {
+    let self = this
+    wx.request({
+      url: 'http://192.168.0.105:9000/api/music',
+      method: 'GET',
+      success (data) {
+        console.log('获取歌曲信息：', data)
+        self.data.song = data.data
+        self.showSongInfo()
+        self.createAudioPlayer()
       }
-    } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          })
-        }
-      })
+    })
+  },
+
+  showSongInfo () {
+    this.setData({
+      song: this.data.song
+    })
+  },
+
+  createAudioPlayer () {
+    if (!this.data.player) {
+      this.data.player= wx.createInnerAudioContext()
+    }
+     
+    this.data.player.src = this.data.song.url
+
+    this.data.player.onError((res) => {
+      console.log(res.errMsg)
+      console.log(res.errCode)
+    })
+  },
+
+  play () {
+    if (this.data.song) {
+      this.data.player.play()
+      this.data.playing = true
     }
   },
-  getUserInfo: function(e) {
-    console.log(e)
-    app.globalData.userInfo = e.detail.userInfo
-    this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
-    })
+
+  pause () {
+    this.data.player.pause()
+    this.data.playing = false
   }
 })
