@@ -6,7 +6,9 @@ Page({
   data: {
     song: null,
     player: null,
-    playing: false
+    playing: false,
+    totalNum: 0,
+    cityNum: 0
   },
   //事件处理函数
   bindViewTap: function() {
@@ -16,6 +18,22 @@ Page({
   },
   onLoad: function () {
     this.getSong()
+
+    // socket
+    // 总人数
+    app.globalData.$socket.on('total number', (data) => {
+      console.log('全国在线：', data)
+      this.setData({
+        totalNum: data
+      })
+    })
+
+    // 当前城市人数
+    app.globalData.$socket.on('city number', (data) => {
+      this.setData({
+        cityNum: data
+      })
+    })
   },
 
   // 获取歌曲信息

@@ -8,6 +8,10 @@
         </view>
     </view>
   </view>
+  <view>
+    <text>全国在线人数：{{ totalNum }}</text>
+    <text>当前城市在线人数：{{ cityNum }}</text>
+  </view>
   <view class="usermotto">
     <text>{{ song.name }}</text>
     <text>{{ song.singer }}</text>
