@@ -1,4 +1,6 @@
 // pages/hello/hello.js
+const app = getApp()
+
 Page({
 
   /**
@@ -17,7 +19,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-  
+    // 当前城市人数
+    app.globalData.eventEmitter.on('current time', (data) => {
+      this.changeView(data.time)
+    })
   },
 
   /**
@@ -39,9 +44,7 @@ Page({
         method: 'GET',
         success: data => {
           console.log('服务器时间：', data)
-          let date = new Date(data.data.time)
-
-          this.changeView(date)
+          this.changeView(data.data.time)
         }
       })
     }, 2000)
@@ -83,7 +86,8 @@ Page({
   },
 
   // 根据请求回来的时间，显示不同的内容
-  changeView: function (date) {
+  changeView: function (time) {
+    let date = new Date(time)
     let hour = date.getHours()
     let msg = ''
 

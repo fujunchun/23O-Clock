@@ -1,6 +1,8 @@
 /**
  * Created by fujunchun on 2018/8/10.
  */
+let schedule = require('node-schedule')
+
 module.exports = (io) => {
     let total = 0
 
@@ -50,4 +52,19 @@ module.exports = (io) => {
             })
         }
     }
+    
+    // 定时任务，当23：00和 01：00时，广播时间，进行应用的开启和关闭
+    let start = schedule.scheduleJob('0 0 23 * * *', () => {
+        console.log('开启任务拉')
+        io.emit('current time', {
+            time: Date.now()
+        })
+    })
+
+    let end = schedule.scheduleJob('0 0 1 * * *', () => {
+        console.log('关闭任务拉')
+        io.emit('current time', {
+            time: Date.now()
+        })
+    })
 }

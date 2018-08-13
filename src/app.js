@@ -1,18 +1,16 @@
 //app.js
 let io = require('./utils/weapp.socket.io.js')
+let EventEmitter = require('./utils/EventEmitter.js')
 let QQMapWX = require('./utils/qqmap-wx-jssdk.min.js');
 let qqmapsdk;
 App({
   onLaunch: function () {
     let self = this
 
+    this.globalData.eventEmitter = new EventEmitter()
     // socket连接
-
     this.globalData.$socket = io('http://192.168.0.105:9000')
-
-    this.globalData.$socket.on('connect', () => {
-      console.log('socket连接成功')
-    })
+    this.socketEvent()
 
     // 位置相关
     qqmapsdk = new QQMapWX({
@@ -59,9 +57,44 @@ App({
     });
   },
 
+  socketEvent () {
+    let socket = this.globalData.$socket
+    let eventEmitter = this.globalData.eventEmitter
+
+    // 连接成功
+    socket.on('connect', () => {
+      console.log('socket连接成功')
+    })
+
+    // 总人数
+    socket.on('total number', (data) => {
+      console.log('总人数：', data)
+      this.globalData.totalNum = data
+      eventEmitter.emit('total number', data)
+    })
+
+    // 当前城市人数
+    socket.on('city number', (data) => {
+      console.log('城市人数：', data)
+      this.globalData.cityNum = data
+      eventEmitter.emit('city number', data)
+    })
+
+    // 服务器到点，主动下发时间
+    // 当前城市人数
+    socket.on('current time', (data) => {
+      console.log('服务器到点下发时间：', data)
+      eventEmitter.emit('current time', data)
+    })
+
+  },
+
   globalData: {
     location: null,
     city: null,
-    $socket: null
+    $socket: null,
+    eventEmitter: null,
+    totalNum: 0,
+    cityNum: 0
   }
 })

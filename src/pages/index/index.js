@@ -17,11 +17,16 @@ Page({
     })
   },
   onLoad: function () {
+    // 初始化，设置在线人数
+    this.init()
+    //获取歌曲
     this.getSong()
+
+    let eventEmitter = app.globalData.eventEmitter
 
     // socket
     // 总人数
-    app.globalData.$socket.on('total number', (data) => {
+    eventEmitter.on('total number', (data) => {
       console.log('全国在线：', data)
       this.setData({
         totalNum: data
@@ -29,10 +34,18 @@ Page({
     })
 
     // 当前城市人数
-    app.globalData.$socket.on('city number', (data) => {
+    eventEmitter.on('city number', (data) => {
+      console.log('全国在线：', data)
       this.setData({
         cityNum: data
       })
+    })
+  },
+
+  init () {
+    this.setData({
+      totalNum: app.globalData.totalNum,
+      cityNum: app.globalData.cityNum
     })
   },
 
